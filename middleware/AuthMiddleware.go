@@ -4,7 +4,7 @@ import (
 	"demo/common"
 	"demo/controller"
 	"demo/model"
-	"demo/response"
+	"demo/respon"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strings"
@@ -28,12 +28,12 @@ func AuthMiddleware() gin.HandlerFunc {
 		_, errM := common.Rds.Get("nothing").Result()
 		blackToken, err1 := common.Rds.Get(controller.Token_logout).Result()
 		if blackToken == tokenString {
-			response.Fail(ctx, gin.H{"code": 401, "msg": "登录验证过期，请重新登陆"}, "用户已登出")
+			respon.Fail(ctx, gin.H{"code": 401, "msg": "登录验证过期，请重新登陆"}, "用户已登出")
 			common.Flag = false
 			return
 		}
 		if err1 != nil && err1 != errM {
-			response.Fail(ctx, gin.H{"msg": "redis获取token错误"}, "redis获取token错误")
+			respon.Fail(ctx, gin.H{"msg": "redis获取token错误"}, "redis获取token错误")
 		}
 
 		//从tokenString中解析信息
@@ -80,12 +80,12 @@ func AuthMiddleware_UpdateInfo() gin.HandlerFunc {
 		_, errM := common.Rds.Get("nothing").Result()
 		blackToken, err1 := common.Rds.Get(controller.Token_logout).Result()
 		if blackToken == tokenString {
-			response.Fail(ctx, gin.H{"code": 401, "msg": "登录验证过期，请重新登陆"}, "用户已登出")
+			respon.Fail(ctx, gin.H{"code": 401, "msg": "登录验证过期，请重新登陆"}, "用户已登出")
 			common.Flag = false
 			return
 		}
 		if err1 != nil && err1 != errM {
-			response.Fail(ctx, gin.H{"msg": "redis获取token错误"}, "redis获取token错误")
+			respon.Fail(ctx, gin.H{"msg": "redis获取token错误"}, "redis获取token错误")
 		}
 
 		//从tokenString中解析信息
