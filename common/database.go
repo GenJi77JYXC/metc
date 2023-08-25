@@ -1,9 +1,9 @@
 package common
 
 import (
+	"demo/model"
+	"demo/util"
 	"fmt"
-	"ginEssential/model"
-	"ginEssential/util"
 
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
@@ -22,22 +22,22 @@ func InitDB() *gorm.DB {
 	password := viper.GetString("datasource.password")
 	charset := viper.GetString("datasource.charset")
 	args := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=%s&parseTime=True&loc=Local",
-	username,
-	password,
-	host,
-	port,
-	database,
-	charset)
+		username,
+		password,
+		host,
+		port,
+		database,
+		charset)
 	fmt.Println(args)
-	
+
 	db, err := gorm.Open(driverName, args)
 	if err != nil {
 		panic(err)
 	}
-	db.AutoMigrate(&model.User{}) //自动创建表
+	db.AutoMigrate(&model.User{}, &model.UserDto{}) //自动创建表
 	return db
 }
 
-func GetDB() *gorm.DB{
+func GetDB() *gorm.DB {
 	return DB
 }
